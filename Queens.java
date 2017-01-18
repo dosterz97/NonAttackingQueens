@@ -1,10 +1,10 @@
 import java.io.*;
 import java.util.*;
 /**
- * Write a description of class NonAttackingQueens here.
+ * Finds all the solutions of Non attacking queens on a 8x8 board
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @Zach Doster
+ * @1/18/17
  */
 public class NonAttackingQueens
 {
@@ -30,7 +30,6 @@ public class NonAttackingQueens
         // put your code here
         NonAttackingQueens b = new NonAttackingQueens();
         b.solve();
-        b.print();
     }
     
     public void print()
@@ -43,7 +42,7 @@ public class NonAttackingQueens
             }
             System.out.println();
         }
-        System.out.println();
+        System.out.println("********");
     }
     
     //check to see if it is ok to place a queen
@@ -56,48 +55,30 @@ public class NonAttackingQueens
                 return false;
         }
         
-        //check horizontal
-        for(int i = 0 ;i <SIZE;i++)
-        {
-            if(board[i][col]==1)
-                return false;
-        }
-        
         //check upper left diagnol
         for(int i = 0; i <= row && i <= col; i++)
         {
             if(board[row-i][col-i]==1)
                 return false;
         }
-        //check bottom right diagnol
-        for(int i = 0; i <= row && i <= 7- col; i++)
-        {
-            if(board[row-i][col + i]==1)
-                return false;
-        }
-         //check upper right diagnol
+
+        //check upper right diagnol
         for(int i = 0; i <= 7 - row && i <= 7- col; i++)
         {
             if(board[row + i][col + i]==1)
                 return false;
         }
-         //check bottom left diagnol
-        for(int i = 0; i <=7- row && i <= col; i++)
-        {
-            if(board[row+i][col - i]==1)
-                return false;
-        }
         return true;
-        
     }
     
     //solve the nonAttackingQueens
     public void solve()
     {
-        int total=0,x=0,y=0,count=0;
+        int total=0,x=0,y=0,count=0, runs = 0;
         //while the board doesnt have enought pieces
         while(total != 8)
         {
+            runs++;
             total=0;
             //count the number of queens
             for(int i = 0; i < SIZE; i++)
@@ -111,31 +92,38 @@ public class NonAttackingQueens
                 }
             }
             
+            //Solution is found
             if(total ==8)
             {
                 total=0;
                 count++;
-                print();
+                System.out.println(count + ".");
+                System.out.println(runs);
+                print();//print soludtion
+                //end if all solutions found
                 if(count>91)
                 {
+
                     return;
                 }
+                //move on to next solution
                 else
                 {
+                    
                     for(int b = 0; b < SIZE; b++)
                     {
-                        moves.add(moves.get(moves.size()-8));
+                        moves.add(moves.get(moves.size()-8));//add solution to list
                     }
                     
-                    y--;
-                    x = moves.get(moves.size()-1).intValue();
-                    board[x][y]=0;
-                    moves.remove(moves.size()-1);
+                    y--;//move back a row
+                    x = moves.get(moves.size()-1).intValue();//move to last spot
+                    board[x][y]=0;//set spot to empty
+                    moves.remove(moves.size()-1);//remove last spot
                     
-                    if(x!=7)
+                    if(x!=7)//move to next spot
                         x++;
                         
-                    if(x==7)
+                    if(x==7)//move back another row
                     {
                         y--;
                         x = moves.get(moves.size()-1).intValue();
@@ -146,7 +134,8 @@ public class NonAttackingQueens
                 }
             }
             
-            if( y < 8 && x < 8 && checkQueen(x,y))
+            //check to see if you can place the queen
+            if(y < 8 && x < 8 && checkQueen(x,y))
             {
                 Integer t = new Integer(x);
                 moves.add(t);
@@ -155,6 +144,7 @@ public class NonAttackingQueens
                 x=0;
                 
             }
+            //move to the next row if x is at the edge
             else if(x>7)
             {
                 y--;
@@ -163,6 +153,7 @@ public class NonAttackingQueens
                 x++;
                 moves.remove(moves.size()-1);
             }
+            //move to the right
             else
                 x++;
         }
