@@ -54,14 +54,12 @@ public class NonAttackingQueens
             if(board[row][i]==1)
                 return false;
         }
-        
         //check upper left diagnol
         for(int i = 0; i <= row && i <= col; i++)
         {
             if(board[row-i][col-i]==1)
                 return false;
         }
-
         //check upper right diagnol
         for(int i = 0; i <= 7 - row && i <= 7- col; i++)
         {
@@ -102,10 +100,7 @@ public class NonAttackingQueens
                 print();//print soludtion
                 //end if all solutions found
                 if(count>91)
-                {
-
                     return;
-                }
                 //move on to next solution
                 else
                 {
